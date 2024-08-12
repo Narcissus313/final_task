@@ -1,0 +1,55 @@
+version: "3.8"
+
+networks:
+    my-network:
+
+services:
+    api_gateway:
+        build: ./api-gateway
+        volumes:
+            - ./api-gateway/src:/usr/src/app/src
+        command: npm run start:dev
+        networks:
+            - my-network
+        ports:
+            - "3000:3000"
+        environment:
+            - PORT=3000
+
+    auth_microservice:
+        build: ./auth-microservice
+        volumes:
+            - ./auth-microservice/src:/usr/src/app/src
+        command: npm run start:dev
+        networks:
+            - my-network
+        ports:
+            - "3001:3001"
+
+    users_microservice:
+        build: ./users-microservice
+        ports:
+            - "3002:3002"
+        volumes:
+            - ./users-microservice/src:/usr/src/app/src
+        command: npm run start:dev
+        networks:
+            - my-network
+
+    mysql_db:
+        image: mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=reza1
+            - MYSQL_DATABASE=task_db
+            - MYSQL_TCP_PORT=3306
+            - DATABASE_USERNAME=root
+        networks:
+            - my-network
+
+volumes:
+    db_data:
