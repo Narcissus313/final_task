@@ -51,10 +51,6 @@ export class UsersMicroserviceService {
     const admin = await this.userRepository.findOne({
       where: { username, role: UserRole.ADMIN },
     });
-    console.log('ssss');
-    console.log('ssss');
-    console.log('ssss');
-    console.log('ssss');
 
     if (!admin || !(await bcrypt.compare(adminPassword, admin.password)))
       return null;

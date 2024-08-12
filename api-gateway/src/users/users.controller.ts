@@ -10,7 +10,6 @@ export class UsersController {
   createNewUser(@Body() createNewUserCredentials: CreateNewUserDto) {
     return this.usersClient.send(
       { cmd: 'createNewUser' },
-      //
       createNewUserCredentials,
     );
   }
